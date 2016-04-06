@@ -7,6 +7,8 @@
 NSString *keychainItemIdentifier = @"TouchIDKey";
 NSString *keychainItemServiceName;
 
+static LAContext *currentContext = nil;
+
 - (void) isAvailable:(CDVInvokedUrlCommand*)command; {
 
   if (NSClassFromString(@"LAContext") == NULL) {
@@ -111,6 +113,8 @@ NSString *keychainItemServiceName;
       return;
     }
 
+    currentContext = laContext;
+
     // this replaces the default 'Enter password' button label
     if (enterPasswordLabel != nil) {
       laContext.localizedFallbackTitle = enterPasswordLabel;
@@ -169,10 +173,10 @@ NSString *keychainItemServiceName;
 
   [self.commandDelegate runInBackground:^{
 
-    NSError *error = nil;
-    LAContext *laContext = [[LAContext alloc] init];
+    if (currentContext) {
+      [currentContext invalidate];
+    }
 
-    [laContext invalidate];
   }];
 }
 
