@@ -160,4 +160,27 @@ NSString *keychainItemServiceName;
   return YES;
 }
 
+- (void) invalidateFingerprint:(CDVInvokedUrlCommand*)command; {
+
+  if (NSClassFromString(@"LAContext") == NULL) {
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR] callbackId:command.callbackId];
+    return;
+  }
+  
+  [self.commandDelegate runInBackground:^{
+
+    NSError *error = nil;
+    LAContext *laContext = [[LAContext alloc] init];
+
+    if ([laContext canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+      [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
+                                  callbackId:command.callbackId];
+    } else {
+      NSArray *errorKeys = @[@"code", @"localizedDescription"];
+      [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:[error dictionaryWithValuesForKeys:errorKeys]]
+                                  callbackId:command.callbackId];
+    }
+  }];
+}
+
 @end

@@ -17,6 +17,10 @@ TouchID.prototype.verifyFingerprintWithCustomPasswordFallbackAndEnterPasswordLab
   cordova.exec(successCallback, errorCallback, "TouchID", "verifyFingerprintWithCustomPasswordFallbackAndEnterPasswordLabel", [message, enterPasswordLabel]);
 };
 
+TouchID.prototype.invalidateFingerprint = function (successCallback, errorCallback) {
+  cordova.exec(successCallback, errorCallback, "TouchID", "invalidateFingerprint", []);
+};
+
 TouchID.install = function () {
   if (!window.plugins) {
     window.plugins = {};
