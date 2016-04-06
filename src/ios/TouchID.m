@@ -172,7 +172,7 @@ NSString *keychainItemServiceName;
     NSError *error = nil;
     LAContext *laContext = [[LAContext alloc] init];
 
-    [laContext invalidate:LAPolicyDeviceOwnerAuthenticationWithBiometrics];
+    [laContext invalidate];
   }];
 }
 
