@@ -172,7 +172,7 @@ NSString *keychainItemServiceName;
     NSError *error = nil;
     LAContext *laContext = [[LAContext alloc] init];
 
-    if ([laContext canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+    if ([laContext invalidate:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
       [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK]
                                   callbackId:command.callbackId];
     } else {
